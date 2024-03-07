@@ -13,7 +13,7 @@ The following table, representing students' grades in courses at a university, i
 | 4             | 2          | 04.07.21 | Nevarez   | Spreadsheet aggregate functions | WWH 201   | 65    | Zehnder Page 87     | i.nevarez@foo.edu |
 | ...           | ...        | ...      | ...       | ...                             | ...       | ...   | ...                 | ...               |
 
-> This data set not compliant with 4NF. Records in the 4NF must satisfy the requirements of 1NF, 2NF, and 3NF firstly. Since the table is already in the the 1NF, I'll start from the requirements of 2NF. 2NF states that a non-key field must provide a fact about the entity uniquely identified by the primary key. If assignment_id and student_id together serve as the composite primary key to guarantee the uniqueness for each record, then each non-key field must provide a fact about both assignment_id and student_id. This requirement is not satisfied. For example, due_date, assignment_topic, and relevant_reading is only associated with assignment_id, while classroom is only associated with student_id. Only grade and professor are facts about both assignment and student. Professor_email is neither a fact about assignment, nor a fact about student. As with second normal form, third normal forms deals with the relationship between non-key and key fields. It is violated when a non-key field is a fact about another non-key field. For example, professor_email is a fact about professor, which is a non-key field. Under fourth normal form, a record type should not contain two or more independent multi-valued facts about an entity. It is also violated by this table. For example, one professor can teach different sections at diffrent classrooms and give different assignments and relevant readings to different sections. In order to normalize these records, I choose to split the data into six tables.
+> This data set is not compliant with 4NF. Records in the 4NF must satisfy the requirements of 1NF, 2NF, and 3NF firstly. Since the table is already in the the 1NF, I'll start from the requirements of 2NF. 2NF states that a non-key field must provide a fact about the entity uniquely identified by the primary key. If assignment_id and student_id together serve as the composite primary key to guarantee the uniqueness for each record, then each non-key field must provide a fact about both assignment_id and student_id. This requirement is not satisfied. For example, due_date, assignment_topic, and relevant_reading is only associated with assignment_id, while classroom is only associated with student_id. Only grade and professor are facts about both assignment and student. Professor_email is neither a fact about assignment, nor a fact about student. As with the second normal form, the third normal form deals with the relationship between non-key and key fields. It is violated when a non-key field is a fact about another non-key field. For example, professor_email is a fact about professor, which is a non-key field. Under the fourth normal form, a record type should not contain two or more independent multi-valued facts about an entity. It is also violated by this table. For example, one professor can teach different sections at diffrent classrooms and give different assignments and relevant readings to different sections. In order to normalize these records, I chose to split the data into six tables.
 
 ## Assumptions
 
@@ -23,7 +23,7 @@ This data represents information about students' grades in courses at a universi
 - each professor might teach multiple sections of the same course
 - each section meets in a specific classroom with a specific professor
 - different sections of the same course may meet in different classrooms, even if the professor is the same
-- professors give assignments, with due dates that are specific to the section of the course
+- professors give assignments with due dates that are specific to the section of the course
 - professors give readings that are relevant and helpful to a given assignment.
 - a professor might (or might not) give the same assignment to different sections of the same course, but with different due dates
 - professors give readings to help with the assignments
@@ -88,7 +88,7 @@ Section_id is the primary key for sections table. Professor_id, course_id, and c
 | 3             | 23.02.21 | 2            | Python and pandas               | 3          | Dümmlers Chapter 14 |
 | ...           | ...      | ...          | ...                             | ...        | ...                 |
 
-Assignment_id is the primary key for assignments table. Professor_id and section_id are the foreign keys here, refering to the professors table and sections table respectively. Professors give assignments, with due dates that are specific to the section of the course. Different assignment will have different topics and relevant readings. 
+Assignment_id is the primary key for the assignments table. Professor_id and section_id are the foreign keys here, refering to the professors table and sections table respectively. Professors give assignments, with due dates that are specific to the section of the course. Different assignment will have different topics and relevant readings. 
 
 6. One table for grades
 
@@ -114,6 +114,8 @@ Student_id and assignment_id are the composite primary key for grades table. Her
 
 The ER diagram I created of my 4NF-compliant version of the data set
 ![ER diagram](./images/ERdiagram.drawio.png)
+
+_In my entity relationship diagram, primary key attribute names are underlined. I also put double underlines under the foreign key field._
 
 - One professor can teach multiple courses and one course can be taught by multiple professors as well. 
 - One course will have different sections, and different courses might share the same section numbers.
